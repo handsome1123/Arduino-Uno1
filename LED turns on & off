@@ -1,0 +1,23 @@
+int LedPin = 13;
+
+void setup() 
+{
+  // Initialize the LED pin as an output
+  pinMode(LedPin, OUTPUT);
+
+  // Begin serial communication at 9600 bits per second
+  Serial.begin(9600);
+}
+
+void loop() 
+{
+  // Turn the LED on
+  digitalWrite(LedPin, HIGH);
+  Serial.println("ON");   // Print ON to the Serial Monitor
+  delay(1000);            // Wait for 1 second
+  
+  // Turn the LED off
+  digitalWrite(LedPin, LOW);
+  Serial.println("OFF");  // Print OFF to the Serial Monitor
+  delay(1000);            // Wait for 1 second
+}
