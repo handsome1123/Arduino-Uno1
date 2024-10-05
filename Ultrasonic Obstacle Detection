@@ -1,0 +1,56 @@
+const int trigPin = 9;    // Pin connected to Trig pin of the ultrasonic sensor
+const int echoPin = 10;   // Pin connected to Echo pin of the ultrasonic sensor
+const int LedPin = 13;    // Pin connected to the LED
+long duration;            // Variable for the duration of the ultrasonic pulse
+int distance;             // Variable to store the calculated distance
+const int threshold = 20; // Threshold distance in centimeters for obstacle detection
+
+void setup() {
+  // Initialize the Serial Monitor at 9600 baud rate
+  Serial.begin(9600);
+
+  // Set the trigPin as an OUTPUT (to send a pulse)
+  pinMode(trigPin, OUTPUT);
+
+  // Set the echoPin as an INPUT (to receive the reflected pulse)
+  pinMode(echoPin, INPUT);
+
+  // Set the LedPin as an OUTPUT to control the LED
+  pinMode(LedPin, OUTPUT);
+}
+
+void loop() {
+  // Clear the trigPin before sending a pulse
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  // Send a 10 microsecond HIGH pulse to the trigPin
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Measure the duration of the HIGH pulse on echoPin
+  duration = pulseIn(echoPin, HIGH);
+
+  // Calculate the distance in centimeters based on the time of flight
+  distance = duration * 0.034 / 2;  // Speed of sound = 0.034 cm/us
+
+  // Print the distance to the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Check if the distance is less than or equal to the threshold
+  if (distance <= threshold && distance > 0) {
+    // Turn the LED on if an obstacle is detected
+    digitalWrite(LedPin, HIGH);
+    Serial.println("Obstacle detected! LED ON");
+  } else {
+    // Turn the LED off if no obstacle is detected
+    digitalWrite(LedPin, LOW);
+    Serial.println("No obstacle. LED OFF");
+  }
+
+  // Add a short delay before the next reading
+  delay(500);
+}
